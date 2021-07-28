@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text=${title}></titleth:text></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<h1>Добавить тренировку</h1>
+
+</div>
+<form action="/" method="post" >
+    <input type="text" name="repetition" placeholder="введите название упражнения" class="form-control"><br>
+    <input type="number" name="exercise" placeholder="введите количество повторений" class="form-control"><br>
+    <input type="number" name="time" step="0.01" placeholder="введите авремя выполнения" class="form-control"><br>
+    <button type="submit" class="btn btn-success"> Добавить</button>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="/history">история</a>
+</form>
+</div>
+</body>
+</html>
