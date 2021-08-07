@@ -8,9 +8,12 @@
     <h3 th:text="${el.exercise}"/>
     <p th:text="${el.approaches}"/>
     <p th:text="${el.time}"/>
-    <a class="me-3 py-2 text-dark text-decoration-none" href="/">назад</a>
+    <form th:action="'/history/'+ ${el.id}+'/remove'" method="post">
+        <button class="btn btn-warning" type="submit">Удалить</button>
+    </form>
 
 </div>
+<a class="me-3 py-2 text-dark text-decoration-none" href="/">назад</a>
 </div>
 
 </body>

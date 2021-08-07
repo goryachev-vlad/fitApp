@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,8 +30,8 @@ public class ControllerMain {
         return "home";
     }
     @PostMapping
-    public String Posthome(@RequestParam String repetition, @RequestParam int exercise, @RequestParam double time, Model model) {
-        Models models = new Models(repetition, exercise, time);
+    public String Posthome(@RequestParam String exercise, @RequestParam int approaches, @RequestParam double time, Model model) {
+        Models models = new Models(exercise, approaches, time);
         modelsRepository.save(models);
         return "redirect:/history";
     }
@@ -39,6 +40,13 @@ public class ControllerMain {
         Iterable<Models> posts = modelsRepository.findAll();
         model.addAttribute("posts", posts);
         return "history";
+    }
+    @PostMapping("history/{id}/remove")
+    public String delete(Model model,@PathVariable(value = "id") long id){
+
+       Models models =  modelsRepository.findById(id).orElseThrow();
+       modelsRepository.delete(models);
+        return "redirect:/history";
     }
 
 }

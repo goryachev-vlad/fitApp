@@ -2,6 +2,7 @@ package com.example.fitApp.controllers;
 import com.example.fitApp.models.Models;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -12,8 +13,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.example.fitApp.repo.ModelsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
@@ -50,27 +54,47 @@ class ControllerMainTest {
 
     @Test
     void test_History() {
+        //given
         Model model = Mockito.mock(Model.class);
 
-        Iterable<Models> posts = modelsRepository.findAll();
+
+        //when
         String result = controllerMain.history(model);
 
-        verify(model).addAttribute("posts", posts);
+        //then
+        verify(modelsRepository).findAll();
         Assertions.assertEquals("history", result);
-
-
     }
 
     @Test
     void test_post() {
-        Models models = Mockito.mock(Models.class);
         Model model = Mockito.mock(Model.class);
 
-        modelsRepository.save(models);
-        String result = controllerMain.history(model);
 
-        verify(modelsRepository).save(models);
-        Assertions.assertEquals("history", result);
-        
+        String result = controllerMain.Posthome("qwe", 1, 1.1, model);
+
+        ArgumentCaptor<Models> captor = ArgumentCaptor.forClass(Models.class);
+        verify(modelsRepository).save(captor.capture());
+        Models models = captor.getValue();
+        Assertions.assertEquals("qwe", models.getExercise());
+        Assertions.assertEquals(1, models.getApproaches());
+        Assertions.assertEquals(1.1, models.getTime());
+        Assertions.assertEquals("redirect:/history", result);
+    }
+
+    @Test
+    void test_delete() {
+        //given
+        long id = 100;
+        Models models = new Models("e", 1, 0d);
+        when(modelsRepository.findById(id)).thenReturn(Optional.of(models));
+        //when
+        String result = controllerMain.delete(null, id);
+
+
+        //then
+       verify(modelsRepository).delete(models);
+
+
     }
 }

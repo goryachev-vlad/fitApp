@@ -4,13 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Models {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-   public Long id;
-    private String  exercise;
+    public long id;
+    private String exercise;
     private int approaches;
     private Double time;
 
@@ -36,6 +37,14 @@ public class Models {
         this.approaches = approaches;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public double getTime() {
         return time;
     }
@@ -45,5 +54,18 @@ public class Models {
     }
 
     public Models() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Models models = (Models) o;
+        return id == models.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
